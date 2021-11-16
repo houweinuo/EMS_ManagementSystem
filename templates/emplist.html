@@ -1,0 +1,163 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+{% load static %}
+<html>
+<head>
+    <title>主页</title>
+    <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+    <link rel="stylesheet" type="text/css" href="{% static '/css/style.css' %}"/>
+</head>
+<body>
+<div id="wrap">
+    <div id="top_content">
+        <div id="header">
+            <div id="rightheader">
+                <p>
+                    {{ time }}
+                    <br/>
+                </p>
+            </div>
+            <div id="topheader">
+                <h1 id="title">
+                    <a href="#">EMS_ManagementSystem</a>
+                </h1>
+            </div>
+            <div id="navigation">
+            </div>
+        </div>
+        <div id="content">
+            <p id="whereami">
+            </p>
+            <div style="display: block; text-align: right">
+                <select name="" id=""
+                        style="background-color: antiquewhite;width: 70px;height: 30px;font-size: 15px;border-radius: 5px">
+                    {% for department in departments %}
+                        <option value="">{{ department }}</option>
+                    {% endfor %}
+                </select>
+            </div>
+            <h1>
+                员工列表
+            </h1>
+
+            <table class="table">
+                <tr class="table_header">
+                    {#                    <td>#}
+                    {#                        头像#}
+                    {#                    </td>#}
+                    <td>
+                        序号
+                    </td>
+                    <td>
+                        姓名
+                    </td>
+                    <td>
+                        薪资
+                    </td>
+                    <td>
+                        年龄
+                    </td>
+                    <td>
+                        性别
+                    </td>
+                    <td>
+                        生日
+                    </td>
+
+                    <td>
+                        所属部门
+                    </td>
+                    <td>
+                        操作
+                    </td>
+                </tr>
+                {% for staff in page %}
+                    <tr class="row1">
+                        {#                        <td>#}
+                        {#                            <img src="{{ staff.avatar.url }}" alt="无法显示">#}
+                        {#                        </td>#}
+                        <td>
+                            {{ staff.id }}
+                        </td>
+                        <td>
+                            {{ staff.staff_name }}
+                        </td>
+                        <td>
+                            {{ staff.salary }}
+                        </td>
+                        <td>
+                            {{ staff.age }}
+                        </td>
+                        {% if staff.gender == 0 %}
+                            <td>
+                                男
+                            </td>
+                        {% else %}
+                            <td>
+                                女
+                            </td>
+                        {% endif %}
+                        <td>
+                            {{ staff.birthday|date:'Y-m-d' }}
+                        </td>
+                        <td>
+                            {{ staff.department_id.dep_name }}
+                        </td>
+                        <td>
+                            <a href="{% url 'user:delete' %}?delete_id={{ staff.id }}">删除</a>&nbsp;<a
+                                href="{% url 'user:update' %}?update_id={{ staff.id }}">修改</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                {#                <tr class="row2">#}
+                {#                    <td>#}
+                {#                        2#}
+                {#                    </td>#}
+                {#                    <td>#}
+                {#                        lishi#}
+                {#                    </td>#}
+                {#                    <td>#}
+                {#                        20000#}
+                {#                    </td>#}
+                {#                    <td>#}
+                {#                        20#}
+                {#                    </td>#}
+                {#                    <td>#}
+                {#                        <a href="emplist.html">delete emp</a>&nbsp;<a href="updateEmp.html">update emp</a>#}
+                {#                    </td>#}
+                {#                </tr>#}
+            </table>
+            <p>
+                <a href="{% url 'user:add' %}"><input type="button" class="button" value="添加员工"/></a>
+            <div align="right" style="margin-right: 50px">
+                {% if page.has_previous %}
+                    <a href="{% url 'user:index' %}?pagenum={{ page.previous_page_number }}">上一页</a>
+                {% endif %}
+
+                {% for page_num in total_page %}
+                    {% if page.number == page_num %}
+                        <a style="color: darkturquoise"
+                           href="{% url 'user:index' %}?pagenum={{ page_num }}">第{{ page_num }}页</a>
+                    {% else %}
+                        <a href="{% url 'user:index' %}?pagenum={{ page_num }}">第{{ page_num }}页</a>
+                    {% endif %}
+                {% endfor %}
+                {% if page.has_next %}
+                    <a href="{% url 'user:index' %}?pagenum={{ page.next_page_number }}">下一页</a>
+                {% endif %}
+            </div>
+            </p>
+
+        </div>
+    </div>
+    <div id="footer">
+        <div id="footer_bg">
+            houweinuo@126.com
+            <div align="right" style="display: inline-block;margin-left: 540px;"><a href="{% url 'user:logout' %}">
+                <button>退出登录</button>
+            </a></div>
+        </div>
+
+    </div>
+</div>
+</body>
+</html>
